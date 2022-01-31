@@ -5,11 +5,11 @@
 [![Documentation Status](https://readthedocs.org/projects/pydbantic/badge/?version=latest)](https://pydbantic.readthedocs.io/en/latest/?badge=latest) [![PyPI version](https://badge.fury.io/py/pydbantic.svg)](https://badge.fury.io/py/pydbantic)[![Unit & Integration Tests](https://github.com/codemation/pydbantic/actions/workflows/package.yaml/badge.svg)](https://github.com/codemation/pydbantic/actions/workflows/package.yaml)
 
 ## Key Features
-- Automatic Migration on Schema Changes
-- Flexible Data Types
-- One Model for type validation & database access
-- Dynamic Model Relationships
-- Integrated Redis Caching Support
+- Automatic migration on schema changes
+- Flexible data types
+- One model for type validation & database access
+- Dynamic model relationships
+- Integrated Redis caching support
 
 ## Documentation
 [https://pydbantic.readthedocs.io/en/latest/](https://pydbantic.readthedocs.io/en/latest/)
@@ -86,7 +86,7 @@ if __name__ == '__main__':
 ## Model Usage
 
 Import and use the models where you need them. As long as DB as already been created,
-the Models can accesss the & Use the connected DB 
+the models can accesss the & use the connected DB.
 
 ```python
 from models import (
@@ -127,14 +127,14 @@ Insert with related models
 
 ```python
 
-    # create a Position in Hr Department
+    # create a position in HR department
     hr_manager = Position.create(
         id='p1234',
         name='manager',
         department=hr_department
     )
     
-    # create instance on an hr employee
+    # create instance on an HR employee
     hr_emp_info = EmployeeInfo.create(
         ssn='123-456-789',
         first_name='john',
@@ -144,7 +144,7 @@ Insert with related models
         zip=12345
     )
 
-    # create an hr employee 
+    # create an HR employee 
     hr_employee = await Employee.create(
         id='e1234',
         employee_info=hr_emp_info,
@@ -156,7 +156,7 @@ Insert with related models
 
 ### Filtering
 ```python
-    # get all hr managers currently employed
+    # get all HR managers currently employed
     managers = await Employee.filter(
         Employee.position==hr_manager, # conditional
         is_employed=True               # key-word argument
@@ -181,19 +181,19 @@ See also filtering [operators](https://pydbantic.readthedocs.io/en/latest/model-
 ```
 ### Updating
 ```python
-    # raise salary of all managers
+    # raise salary of all employed managers
     for manager in await Employee.filter(
         position=hr_manager,
-        is_employed=False
+        is_employed=True
     ):
         manager.salary = manager.salary + 1000.0
         await manager.update() # or manager.save()
 ```
 
-`.save()` results in a new row created in `Employee` table as well as the related `EmployeeInfo`, `Position`, `Department` tables if not yet created.  s
+`.save()` results in a new row created in `Employee` table as well as the related `EmployeeInfo`, `Position`, `Department` tables if not yet created.
 
 ## What is pydbantic
-`pydbantic` was built to solve some of the most common pain developers may face working with databases. 
+`pydbantic` was built to solve some of the most common pains developers may face working with databases. 
 - migrations 
 - model creation / managment
 - dynamic relationships
@@ -203,21 +203,21 @@ See also filtering [operators](https://pydbantic.readthedocs.io/en/latest/model-
 
 `pydbantic` knows data is rarely flat or follows a set schema
 
-`pydbantic` understand migrations are not fun, and does them for you
+`pydbantic` understands migrations are not fun, and does them for you
 
 `pydbantic` speaks many `types` 
 
 
 ## Pillars
-- [pydantic](https://pydantic-docs.helpmanual.io/) - Models, Type validation
-- [databases](https://www.encode.io/databases/) - Database Connection Abstractions
-- [sqlalchemy](https://www.sqlalchemy.org/) - Core Database Query and Database Model 
+- [pydantic](https://pydantic-docs.helpmanual.io/) - Models, type validation
+- [databases](https://www.encode.io/databases/) - Database connection abstractions
+- [sqlalchemy](https://www.sqlalchemy.org/) - Core database query and database model 
 
 ## Models
-`pydbantic` most basic object is a `DataBaseModel`. This object may be comprised of almost any `pickle-able` python object, though you are encouraged to stay within the type-validation land by using `pydantic`'s `BaseModels` and validators.
+`pydbantic` most basic object is a `DataBaseModel`. This object may be comprised of almost any `pickle-able` Python object, though you are encouraged to stay within the type-validation land by using `pydantic`'s `BaseModels` and validators.
 
 ### Primary Keys
-`DataBaseModel` 's also have a priamry key, which is the first item defined in a model or marked with `= PrimaryKey()`
+`DataBaseModel`s also have a primary key, which is the first item defined in a model or marked with `= PrimaryKey()`
 
 ```python
 class NotesBm(DataBaseModel):
@@ -230,10 +230,10 @@ class NotesBm(DataBaseModel):
 ```
 ### Model Types & Typing
 `DataBaseModel` items are capable of being multiple layers deep following `pydantic` model validation
-- Primary Key - First Item, must be unique
-- Required - items without default values are assumed required
-- Optional - marked explicitly with `typing.Optional` or with a default value
-- Union - Accepts Either specified input type Union[str|int]
+- Primary Key - First item, must be unique
+- Required - Items without default values are assumed required
+- Optional - Marked explicitly with `typing.Optional` or with a default value
+- Union - Accepts either specified input type Union[str|int]
 - List[item] - Lists of specified items
 
 Input datatypes without a natural / built in serialization path are serialized using `pickle` and stored as bytes. More on this later. 
@@ -242,7 +242,7 @@ Input datatypes without a natural / built in serialization path are serialized u
 `pydbantic` handles migrations automatically in response to detected model changes: `New Field`, `Removed Field`, `Modified Field`, `Renamed Field`, `Primary Key Changes`
 
 ### Renaming an exiting column
-Speical consideration is needed when renaming a field in a `DataBaseModel`, extra metadata `__renamed__` is needed to ensure existing data is migrated:
+Special consideration is needed when renaming a field in a `DataBaseModel`, extra metadata `__renamed__` is needed to ensure existing data is migrated:
 
 ```python
 # field `first_name` is renamed to `first_names`
