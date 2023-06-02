@@ -8,7 +8,7 @@ BASE_REQUIREMENTS = [
 ]
 MYSQL_REQUIREMENTS = [
     'aiomysql==0.0.21',
-    'cryptography==3.4.8',
+    'cryptography==41.0.0',
     'mysqlclient==2.0.3',
     'PyMySQL==0.9.3',
 ]
